@@ -36,6 +36,7 @@ using(var scope = app.Services.CreateScope()) {
     }
 }
 
+app.MapUserEndpoint();
 app.MapLeaveEndpoint();
 app.MapControllers();
 app.UseCors("AllowReactApp");
