@@ -12,6 +12,13 @@ public static class LeaveEndpoint {
     public static RouteGroupBuilder MapLeaveEndpoint(this WebApplication app) {
         var group = app.MapGroup("leave").WithParameterValidation();
 
+        group.MapGet("/all", async (LeaveContext dbContext) =>
+            await dbContext.Leaves
+                .Select(leave => leave.ToLeaveDetailsDto())
+                .AsNoTracking()
+                .ToListAsync()
+        );
+
         group.MapGet("/{id}", async(int id, LeaveContext dbContext) => {
             Leave? leave = await dbContext.Leaves.FindAsync(id);
             return leave is null ? Results.NotFound() : Results.Ok(leave.ToLeaveDetailsDto());
