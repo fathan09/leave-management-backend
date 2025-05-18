@@ -17,4 +17,5 @@ public class LeaveContext : DbContext {
 
     public DbSet<Leave> Leaves {get; set;}
 
+    public DbSet<User> Users { get; set; }
 }
