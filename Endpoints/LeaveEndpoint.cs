@@ -31,6 +31,18 @@ public static class LeaveEndpoint {
             return Results.CreatedAtRoute(GetLeaveEndpointName, new{id = leave.leaveId}, leave.ToLeaveDetailsDto());
         }).WithParameterValidation();
 
+        group.MapPatch("updatestatus/{id}", async (int id, UpdateStatusDto updateStatus, LeaveContext dbContext) =>
+        {
+            var existingLeave = await dbContext.Leaves.FindAsync(id);
+            if (existingLeave is null)
+            {
+                return Results.NotFound();
+            }
+            existingLeave.status = updateStatus.status;
+            await dbContext.SaveChangesAsync();
+            return Results.NoContent();
+        });
+
         return group;
     }
 }
