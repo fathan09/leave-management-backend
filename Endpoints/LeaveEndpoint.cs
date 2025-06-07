@@ -43,6 +43,12 @@ public static class LeaveEndpoint {
             return Results.NoContent();
         });
 
+        group.MapDelete("/delete/{id}", async (int id, LeaveContext dbContext) =>
+        {
+            await dbContext.Leaves.Where(leave => leave.leaveId == id).ExecuteDeleteAsync();
+            return Results.NoContent();
+        });
+
         return group;
     }
 }
